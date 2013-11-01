@@ -149,10 +149,10 @@ class Foo(object):
     def process(job):
         '''This is supposed to raise an Exception'''
         if 'valueerror' in job.tags:
-            print 'Raising ValueError'
+            print('Raising ValueError')
             raise ValueError('Foo')
         else:
-            print 'Raising Exception'
+            print('Raising Exception')
             raise Exception('Foo')
 
 
