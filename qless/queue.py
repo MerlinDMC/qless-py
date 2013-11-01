@@ -63,8 +63,12 @@ class Queue(object):
 
     def class_string(self, klass):
         '''Return a string representative of the class'''
-        if isinstance(klass, basestring):
-            return klass
+        try:
+            if isinstance(klass, basestring):
+                return klass
+        except NameError:
+            if isinstance(klass, str) or isinstance(klass, unicode):
+                return klass
         return klass.__module__ + '.' + klass.__name__
 
     def put(self, klass, data, priority=None, tags=None, delay=None,
