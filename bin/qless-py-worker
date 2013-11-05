@@ -57,6 +57,10 @@ parser = argparse.ArgumentParser(description='Run qless workers.')
 
 parser.add_argument('--host', dest='host', default='localhost',
     help='The host:port to connect to as the Redis server')
+parser.add_argument('--db', dest='db', default=0,
+    help='The db to connect to on the Redis server')
+parser.add_argument('--auth', dest='auth', default=None,
+    help='The auth string used to connect to the Redis server')
 parser.add_argument('-w', '--workers', default=psutil.NUM_CPUS, type=int,
     help='How many processes to run. Set to 0 to use all available cores')
 parser.add_argument('-g', '--greenlets', default=0, type=int,
@@ -119,10 +123,10 @@ for i in getattr(args, 'import'):
 try:
     if args.greenlets:
         from qless.gworker import Worker
-        Worker(args.queue, args.host, args.workers, args.interval, args.workdir, hostname=args.name, resume=args.resume, pool_size=args.greenlets).run()
+        Worker(args.queue, args.host, args.db, args.auth, args.workers, args.interval, args.workdir, hostname=args.name, resume=args.resume, pool_size=args.greenlets).run()
     else:
         from qless.worker import Worker
-        Worker(args.queue, args.host, args.workers, args.interval, args.workdir, hostname=args.name, resume=args.resume).run()
+        Worker(args.queue, args.host, args.db, args.auth, args.workers, args.interval, args.workdir, hostname=args.name, resume=args.resume).run()
 except Exception:
     logger.exception('Uncaught exception in qless.worker.Worker.run')
 

@@ -24,13 +24,15 @@ class Worker(object):
         'sandbox': '/dev/null'
     }
 
-    def __init__(self, queues, host=None, workers=None, interval=60,
-        workdir='.', resume=False):
+    def __init__(self, queues, host=None, db=0, auth=None, workers=None,
+                 interval=60, workdir='.', resume=False):
         host = host or 'localhost'
         _host, _, _port = host.partition(':')
         _port = int(_port or 6379)
         self.host = _host
         self.port = _port
+        self.db = db
+        self.auth = auth
         self.count = workers or psutil.NUM_CPUS
         self.client = qless.client(self.host, self.port)
         self.queues = queues
